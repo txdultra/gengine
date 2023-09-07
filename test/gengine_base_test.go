@@ -5,6 +5,10 @@ import (
 	"github.com/bilibili/gengine/builder"
 	"github.com/bilibili/gengine/context"
 	"github.com/bilibili/gengine/engine"
+	"github.com/panjf2000/ants/v2"
+	"runtime"
+	"sync"
+	"sync/atomic"
 	"testing"
 	"time"
 )
@@ -20,11 +24,11 @@ func (u *User) GetNum(i int64) int64 {
 }
 
 func (u *User) Print(s string) {
-	fmt.Println(s)
+	//fmt.Println(s)
 }
 
 func (u *User) Say() {
-	fmt.Println("hello world")
+	//fmt.Println("hello world")
 }
 
 const (
@@ -32,7 +36,7 @@ const (
 rule "测试" "测试描述"  salience 0 
 begin
 		// 重命名函数 测试; @name represent the rule name "测试"
-		Sout(@name)
+		//Sout(@name)
 		// 普通函数 测试
 		Hello()
 		//结构提方法 测试
@@ -48,15 +52,15 @@ begin
 			//布尔值设置 测试
 			User.Male = false
 			//规则内自定义变量调用 测试
-			User.Print(variable)
+			//User.Print(variable)
 			//float测试	也支持科学计数法		
 			f = 9.56			
-			PrintReal(f)
+			//PrintReal(f)
 			//嵌套if-else测试
 			if false	{
-				Sout("嵌套if测试")
+				//Sout("嵌套if测试")
 			}else{
-				Sout("嵌套else测试")
+				//Sout("嵌套else测试")
 			}
 		}else{ //else
 			//字符串设置 测试
@@ -64,7 +68,7 @@ begin
 		}
 		
 		if true {
-			Sout("if true ")
+			//Sout("if true ")
 		}
 
 		if true{}else{}
@@ -72,12 +76,16 @@ end`
 )
 
 func Hello() {
-	fmt.Println("hello")
+	//fmt.Println("hello")
 }
 
 func PrintReal(real float64) {
-	fmt.Println(real)
+	//fmt.Println(real)
 }
+
+var total int32 = 0
+var timeouts int32 = 0
+var times uint64 = 0
 
 func exe(user *User) {
 	dataContext := context.NewDataContext()
@@ -95,34 +103,72 @@ func exe(user *User) {
 	ruleBuilder := builder.NewRuleBuilder(dataContext)
 
 	//读取规则
-	start1 := time.Now().UnixNano()
+	//start1 := time.Now().UnixNano()
 	err := ruleBuilder.BuildRuleFromString(base_rule)
-	end1 := time.Now().UnixNano()
+	//end1 := time.Now().UnixNano()
 
-	println(fmt.Sprintf("rules num:%d, load rules cost time:%d ns", len(ruleBuilder.Kc.RuleEntities), end1-start1))
+	//println(fmt.Sprintf("rules num:%d, load rules cost time:%d ns", len(ruleBuilder.Kc.RuleEntities), end1-start1))
+
+	inData := make(map[string]interface{})
+	inData["strconv"] = strconv
+	inData["User"] = user
+	//rename and inject
+	inData["Sout"] = fmt.Println
+	//直接注入函数
+	inData["Hello"] = Hello
+	inData["PrintReal"] = PrintReal
 
 	if err != nil {
 		panic(err)
 	}
-	eng := engine.NewGengine()
+	//eng := engine.NewGengine()
+	pool, err := engine.NewGenginePool(
+		50000,
+		100000,
+		2,
+		base_rule,
+		inData,
+	)
+	goPool, _ := ants.NewPool(50000)
 
-	start := time.Now().UnixNano()
-	// true: means when there are many rules， if one rule execute error，continue to execute rules after the occur error rule
-	err = eng.Execute(ruleBuilder, true)
-	end := time.Now().UnixNano()
-	if err != nil {
-		panic(err)
+	wg := sync.WaitGroup{}
+
+	for i := 0; i < 10000; i++ {
+		wg.Add(1)
+		goPool.Submit(func() {
+			defer wg.Done()
+			start := time.Now()
+			err, _ = pool.ExecuteConcurrent(inData)
+			atomic.AddInt32(&total, 1)
+			atomic.AddUint64(&times, uint64(time.Now().Sub(start)))
+			if time.Now().Sub(start) > 5*time.Millisecond {
+				atomic.AddInt32(&timeouts, 1)
+				fmt.Println("execute rule cost ns", time.Now().Sub(start))
+				//println(fmt.Sprintf("user.Age=%d,Name=%s,Male=%t", user.Age, user.Name, user.Male))
+			}
+			if err != nil {
+				panic(err)
+			}
+		})
 	}
-	println(fmt.Sprintf("execute rule cost %d ns", end-start))
-	println(fmt.Sprintf("user.Age=%d,Name=%s,Male=%t", user.Age, user.Name, user.Male))
-
+	wg.Wait()
 }
 
 func Test_Base(t *testing.T) {
-	user := &User{
-		Name: "Calo",
-		Age:  0,
-		Male: true,
+	runtime.GOMAXPROCS(runtime.NumCPU())
+	tss := 10
+	for i := 0; i < tss; i++ {
+		time.Sleep(time.Second)
+		user := &User{
+			Name: "Calo",
+			Age:  0,
+			Male: true,
+		}
+		exe(user)
 	}
-	exe(user)
+
+	fmt.Println("total:", total)
+	fmt.Println("timeout 5 ms", timeouts)
+	avg := times / 100 * 10000
+	fmt.Println("avg time ", time.Duration(avg)/time.Millisecond)
 }

@@ -3,6 +3,7 @@ package iparser
 import (
 	"errors"
 	"fmt"
+	"github.com/antlr4-go/antlr/v4"
 	"reflect"
 	"strconv"
 	"strings"
@@ -10,7 +11,6 @@ import (
 	"github.com/bilibili/gengine/internal/base"
 	parser "github.com/bilibili/gengine/internal/iantlr/alr"
 
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"github.com/golang-collections/collections/stack"
 )
 

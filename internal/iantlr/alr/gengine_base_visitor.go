@@ -2,7 +2,7 @@
 
 package parser // gengine
 
-import "github.com/antlr/antlr4/runtime/Go/antlr"
+import "github.com/antlr4-go/antlr/v4"
 
 type BasegengineVisitor struct {
 	*antlr.BaseParseTreeVisitor

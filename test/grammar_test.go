@@ -2,12 +2,12 @@ package test
 
 import (
 	"fmt"
+	"github.com/antlr4-go/antlr/v4"
 	"github.com/bilibili/gengine/builder"
 	"github.com/bilibili/gengine/context"
 	"github.com/bilibili/gengine/internal/base"
 	parser "github.com/bilibili/gengine/internal/iantlr/alr"
 	"github.com/bilibili/gengine/internal/iparser"
-	"github.com/antlr/antlr4/runtime/Go/antlr"
 	"testing"
 )
 
