@@ -1,4 +1,4 @@
-module github.com/bilibili/gengine
+module github.com/txdultra/gengine
 
 go 1.18
 

@@ -3,11 +3,11 @@ package test
 import (
 	"fmt"
 	"github.com/antlr4-go/antlr/v4"
-	"github.com/bilibili/gengine/builder"
-	"github.com/bilibili/gengine/context"
-	"github.com/bilibili/gengine/internal/base"
-	parser "github.com/bilibili/gengine/internal/iantlr/alr"
-	"github.com/bilibili/gengine/internal/iparser"
+	"github.com/txdultra/gengine/builder"
+	"github.com/txdultra/gengine/context"
+	"github.com/txdultra/gengine/internal/base"
+	parser "github.com/txdultra/gengine/internal/iantlr/alr"
+	"github.com/txdultra/gengine/internal/iparser"
 	"testing"
 )
 

@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/bilibili/gengine/context"
-	"github.com/bilibili/gengine/internal/iter"
+	"github.com/txdultra/gengine/context"
+	"github.com/txdultra/gengine/internal/iter"
 )
 
 // 	forRane循环语法 forRange key=mapInfo{}

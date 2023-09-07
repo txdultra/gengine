@@ -2,7 +2,7 @@ package test
 
 import (
 	"fmt"
-	"github.com/bilibili/gengine/engine"
+	"github.com/txdultra/gengine/engine"
 	"testing"
 	"time"
 )
@@ -61,7 +61,6 @@ func Test_rp1(t *testing.T) {
 		for {
 			isExist := pool.IsExist([]string{"1"})
 			println(fmt.Sprintf("exist 1... %+v", isExist))
-
 
 			isExist = pool.IsExist([]string{"2"})
 			println(fmt.Sprintf("exist 2... %+v", isExist))

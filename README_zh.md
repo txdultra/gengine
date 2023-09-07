@@ -3,7 +3,7 @@
 </div>
 
 [![license](https://img.shields.io/badge/license-BSD-blue.svg)]()
-[![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://github.com/bilibili/gengine/wiki)
+[![Documentation](https://img.shields.io/badge/api-reference-blue.svg)](https://github.com/txdultra/gengine/wiki)
 
 # Gengine
 - [English document](README.md)
@@ -19,7 +19,7 @@
 - 可以看这篇文章: https://xie.infoq.cn/article/40bfff1fbca1867991a1453ac
 
 ## 官方文档
-- 中文文档 https://github.com/bilibili/gengine/wiki
+- 中文文档 https://github.com/txdultra/gengine/wiki
 - English doc: https://rencalo770.github.io/gengine_en/#/introduce
 
 ## 支持的执行模式
@@ -29,7 +29,7 @@
 - 建议使用最新版本
 - go mod 或者 go vendor, go mod 引入:
 ```go
-require github.com/bilibili/gengine v1.5.6
+require github.com/txdultra/gengine v1.5.6
 ```
 
 ## 问题联系

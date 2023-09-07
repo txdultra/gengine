@@ -2,10 +2,10 @@ package map_slice_array
 
 import (
 	"fmt"
-	"github.com/bilibili/gengine/builder"
-	"github.com/bilibili/gengine/context"
-	"github.com/bilibili/gengine/engine"
-	"github.com/bilibili/gengine/internal/core"
+	"github.com/txdultra/gengine/builder"
+	"github.com/txdultra/gengine/context"
+	"github.com/txdultra/gengine/engine"
+	"github.com/txdultra/gengine/internal/core"
 	"testing"
 )
 

@@ -1,7 +1,7 @@
 package icore
 
 import (
-	"github.com/bilibili/gengine/context"
+	"github.com/txdultra/gengine/context"
 	"reflect"
 	"testing"
 )

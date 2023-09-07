@@ -1,9 +1,9 @@
 package map_slice_array
 
 import (
-	"github.com/bilibili/gengine/builder"
-	"github.com/bilibili/gengine/context"
-	"github.com/bilibili/gengine/engine"
+	"github.com/txdultra/gengine/builder"
+	"github.com/txdultra/gengine/context"
+	"github.com/txdultra/gengine/engine"
 	"testing"
 )
 

@@ -2,9 +2,9 @@ package test
 
 import (
 	"fmt"
-	"github.com/bilibili/gengine/builder"
-	"github.com/bilibili/gengine/context"
-	"github.com/bilibili/gengine/engine"
+	"github.com/txdultra/gengine/builder"
+	"github.com/txdultra/gengine/context"
+	"github.com/txdultra/gengine/engine"
 	"testing"
 )
 
@@ -59,8 +59,6 @@ func Test_single_remove_rules(t *testing.T) {
 	fmt.Println(fmt.Sprintf("%+v,len=%d", isExist, len(ruleBuilder.Kc.RuleEntities)))
 
 }
-
-
 
 func Test_pool_remove_rules(t *testing.T) {
 
